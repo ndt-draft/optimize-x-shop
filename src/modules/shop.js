@@ -1,7 +1,8 @@
+import { push } from 'connected-react-router'
 import api from '../modules/api'
 
 // Constants
-export const UPDATE_SHOP_DATA = 'products/UPDATE_SHOP_DATA'
+export const UPDATE_SHOP_DATA = 'shop/UPDATE_SHOP_DATA'
 
 // Actions
 export const updateShopData = payload => ({
@@ -56,6 +57,15 @@ export const addToCart = item => {
 export const finishCheckout = () => {
   return (dispatch, getState) => {
     console.log('track checkout_complete event')
+
+    // empty cart
+    dispatch(
+      updateShopData({
+        cart: []
+      })
+    )
+
+    dispatch(push('/'))
   }
 }
 
