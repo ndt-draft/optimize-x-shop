@@ -1,11 +1,12 @@
 import React from 'react'
 import Product from '../Product'
 
-const Products = (props) => (
+const Products = props => (
   <div>
-    {props.products.map(product =>
-      <Product key={product.id} {...product}/>
-    )}
+    <h2>Products</h2>
+    {props.products.map(product => (
+      <Product key={product.id} {...product} addToCart={props.addToCart} />
+    ))}
   </div>
 )
 

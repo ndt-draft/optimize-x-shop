@@ -13,4 +13,9 @@ body {
 button:disabled {
   opacity: 0.5; }
 
-/*# sourceMappingURL=index.css.map */
+.products-wrapper {
+  width: 80%;
+  float: left; }
+
+.cart-wrapper {
+  overflow: hidden; }

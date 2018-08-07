@@ -1,31 +1,40 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Products from '../../components/Products'
-import {
-  fetchProductsData
-} from '../../modules/products'
+import Cart from '../../components/Cart'
+import { fetchShopData, addToCart } from '../../modules/shop'
 
 class Home extends React.Component {
   componentDidMount() {
-    this.props.fetchProductsData()
+    this.props.fetchShopData()
   }
 
   render() {
     return (
       <div>
         <h1>Home</h1>
-        <Products products={this.props.products}/>
+        <div className="products-wrapper">
+          <Products
+            products={this.props.products}
+            addToCart={this.props.addToCart}
+          />
+        </div>
+        <div className="cart-wrapper">
+          <Cart cart={this.props.cart} />
+        </div>
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  products: state.products.products
+  products: state.shop.products,
+  cart: state.shop.cart
 })
 
 const mapDispatchToProps = {
-  fetchProductsData
+  fetchShopData,
+  addToCart
 }
 
 export default connect(
