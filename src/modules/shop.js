@@ -12,6 +12,8 @@ export const updateShopData = payload => ({
 // Thunks
 export const fetchShopData = () => {
   return dispatch => {
+    console.log('activate experiment here')
+
     let products = api.fetchProducts()
 
     dispatch(
@@ -46,6 +48,14 @@ export const addToCart = item => {
         cart
       })
     )
+
+    console.log('track add_to_cart event')
+  }
+}
+
+export const finishCheckout = () => {
+  return (dispatch, getState) => {
+    console.log('track checkout_complete event')
   }
 }
 

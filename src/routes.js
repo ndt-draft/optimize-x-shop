@@ -2,7 +2,7 @@ import DefaultLayout from './layouts/DefaultLayout'
 import asyncComponent from './components/AsyncComponent'
 
 const AsyncHome = asyncComponent(() => import('./containers/home'))
-const AsyncAbout = asyncComponent(() => import('./containers/about'))
+const AsyncCheckout = asyncComponent(() => import('./containers/checkout'))
 
 export default [
   {
@@ -14,8 +14,8 @@ export default [
         exact: true
       },
       {
-        path: '/about',
-        component: AsyncAbout,
+        path: '/checkout',
+        component: AsyncCheckout,
         exact: true
       }
     ]

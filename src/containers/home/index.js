@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
 import Products from '../../components/Products'
 import Cart from '../../components/Cart'
 import { fetchShopData, addToCart } from '../../modules/shop'
@@ -20,7 +21,10 @@ class Home extends React.Component {
           />
         </div>
         <div className="cart-wrapper">
-          <Cart cart={this.props.cart} />
+          <Cart
+            cart={this.props.cart}
+            changeCheckout={this.props.changeCheckout}
+          />
         </div>
       </div>
     )
@@ -34,7 +38,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchShopData,
-  addToCart
+  addToCart,
+  changeCheckout: () => push('/checkout')
 }
 
 export default connect(
