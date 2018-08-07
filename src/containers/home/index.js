@@ -1,56 +1,31 @@
 import React from 'react'
-import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
+import Products from '../../components/Products'
 import {
-  increment,
-  incrementAsync,
-  decrement,
-  decrementAsync
-} from '../../modules/counter'
+  fetchProductsData
+} from '../../modules/products'
 
-const Home = props => (
-  <div>
-    <h1>Home</h1>
-    <p>Count: {props.count}</p>
+class Home extends React.Component {
+  componentDidMount() {
+    this.props.fetchProductsData()
+  }
 
-    <p>
-      <button onClick={props.increment} disabled={props.isIncrementing}>
-        Increment
-      </button>
-      <button onClick={props.incrementAsync} disabled={props.isIncrementing}>
-        Increment Async
-      </button>
-    </p>
-
-    <p>
-      <button onClick={props.decrement} disabled={props.isDecrementing}>
-        Decrement
-      </button>
-      <button onClick={props.decrementAsync} disabled={props.isDecrementing}>
-        Decrement Async
-      </button>
-    </p>
-
-    <p>
-      <button onClick={() => props.changePage()}>
-        Go to about page via redux
-      </button>
-    </p>
-  </div>
-)
+  render() {
+    return (
+      <div>
+        <h1>Home</h1>
+        <Products products={this.props.products}/>
+      </div>
+    )
+  }
+}
 
 const mapStateToProps = state => ({
-  count: state.counter.count,
-  isIncrementing: state.counter.isIncrementing,
-  isDecrementing: state.counter.isDecrementing
+  products: state.products.products
 })
 
 const mapDispatchToProps = {
-  increment,
-  incrementAsync,
-  decrement,
-  decrementAsync,
-  changePage: () => push('/about')
+  fetchProductsData
 }
 
 export default connect(
