@@ -12,21 +12,45 @@ export const updateShopData = payload => ({
 
 // Thunks
 export const fetchShopData = () => {
-  return dispatch => {
-    console.log('activate experiment here')
+  return async (dispatch, getState) => {
+    let state = getState()
+    let opi = await api.getOptimizelyInstance()
+    let sortExperimentAttributes = {
+      device: 'Desktop'
+    }
 
-    let products = api.fetchProducts()
+    let sortBy = opi.activate(
+      'sorting_experiment',
+      state.shop.uuid,
+      sortExperimentAttributes
+    )
+    let checkoutFlow = opi.activate('checkout_flow_experiment', state.shop.uuid)
+
+    switch (sortBy) {
+      case 'sort_by_name':
+        sortBy = 'name'
+        break
+      case 'sort_by_price':
+        sortBy = 'price'
+        break
+      default:
+        sortBy = ''
+        break
+    }
+
+    let products = api.fetchProducts(sortBy)
 
     dispatch(
       updateShopData({
-        products
+        products,
+        checkoutFlow
       })
     )
   }
 }
 
 export const addToCart = item => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     let state = getState()
     let cart = [...state.shop.cart]
 
@@ -50,22 +74,61 @@ export const addToCart = item => {
       })
     )
 
-    console.log('track add_to_cart event')
+    let attributes = {
+      device: 'Desktop',
+      ad_source: 'localhost'
+    }
+    let opi = await api.getOptimizelyInstance()
+    opi.track('add_to_cart', state.shop.uuid, attributes)
+  }
+}
+
+export const changeCheckout = () => {
+  return (dispatch, getState) => {
+    let state = getState()
+    let checkoutFlow = state.shop.checkoutFlow
+
+    if (checkoutFlow === 'two_step_checkout') {
+      dispatch(push('/shipping'))
+    } else {
+      dispatch(push('/checkout'))
+    }
+  }
+}
+
+export const changeShippingAddress = value => {
+  return dispatch => {
+    dispatch(
+      updateShopData({
+        shippingAddress: value
+      })
+    )
   }
 }
 
 export const finishCheckout = () => {
-  return (dispatch, getState) => {
-    console.log('track checkout_complete event')
+  return async (dispatch, getState) => {
+    let state = getState()
+    let cart = state.shop.cart
+
+    // track checkout_complete event here
+    let revenue = cart.reduce((acc, item) => acc + item.price * item.count, 0)
+
+    let opi = await api.getOptimizelyInstance()
+    let eventTags = {
+      shippingAddress: state.shop.shippingAddress,
+      revenue: revenue * 100
+    }
+    opi.track('checkout_complete', state.shop.uuid, null, eventTags)
 
     // empty cart
     dispatch(
       updateShopData({
-        cart: []
+        cart: [],
+        shippingAddress: '',
+        checkoutComplete: true
       })
     )
-
-    dispatch(push('/'))
   }
 }
 
@@ -81,8 +144,12 @@ const ACTION_HANDLERS = {
 
 // Reducer
 const initialState = {
+  uuid: '',
+  checkoutFlow: 'one_step_checkout',
   products: [],
-  cart: []
+  cart: [],
+  shippingAddress: '',
+  checkoutComplete: false
 }
 
 export default (state = initialState, action) => {

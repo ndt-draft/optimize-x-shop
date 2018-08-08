@@ -8,12 +8,15 @@ const Cart = props => {
   return (
     <div>
       <h2>Cart - ${calculateCartTotal()}</h2>
-      {props.cart.map(product => (
-        <h4 key={product.id}>
-          {product.name} x {product.count}
-        </h4>
-      ))}
-      <button onClick={props.changeCheckout}>Checkout</button>
+      <ul>
+        {props.cart.map(product => (
+          <li key={product.id}>
+            <h4>
+              {product.name} x {product.count}
+            </h4>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

@@ -10,6 +10,7 @@
     "react-scripts": "^1.1.4"
   },
   "dependencies": {
+    "@optimizely/optimizely-sdk": "^2.1.2",
     "connected-react-router": "^4.3.0",
     "lodash": "^4.17.10",
     "node-sass": "^4.9.2",
@@ -20,7 +21,8 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "sanitize.css": "^5.0.0"
+    "sanitize.css": "^5.0.0",
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "npm-run-all -p sass:watch start-js",

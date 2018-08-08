@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { push } from 'connected-react-router'
 import Products from '../../components/Products'
 import Cart from '../../components/Cart'
-import { fetchShopData, addToCart } from '../../modules/shop'
+import { fetchShopData, addToCart, changeCheckout } from '../../modules/shop'
 
 class Home extends React.Component {
   componentDidMount() {
@@ -21,10 +20,8 @@ class Home extends React.Component {
           />
         </div>
         <div className="cart-wrapper">
-          <Cart
-            cart={this.props.cart}
-            changeCheckout={this.props.changeCheckout}
-          />
+          <Cart cart={this.props.cart} />
+          <button onClick={this.props.changeCheckout}>Checkout</button>
         </div>
       </div>
     )
@@ -39,7 +36,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchShopData,
   addToCart,
-  changeCheckout: () => push('/checkout')
+  changeCheckout
 }
 
 export default connect(

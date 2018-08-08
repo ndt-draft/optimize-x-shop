@@ -14,8 +14,9 @@ button:disabled {
   opacity: 0.5; }
 
 .products-wrapper {
-  width: 80%;
-  float: left; }
+  width: 60%;
+  float: left;
+  margin-bottom: 30px; }
 
 .cart-wrapper {
   overflow: hidden; }
